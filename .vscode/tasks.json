@@ -1,0 +1,69 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "BuildWheel",
+        "command": "${command:python.interpreterPath}",
+        "args": [
+          "setup.py",
+          "sdist",
+          "bdist_wheel"
+        ],
+        "type": "shell",
+        "options": {
+          "cwd": "${workspaceRoot}/azure-devops/"
+        },
+        "presentation": {
+            "echo": true,
+            "reveal": "never",
+            "focus": false,
+            "panel": "shared",
+            "showReuseMessage": true,
+            "clear": false
+        }
+      },
+      {
+        "label": "Uninstall extension",
+        "type": "shell",
+        "command": "az extension remove -n azure-devops",
+        "options": {
+          "cwd": "${workspaceRoot}/azure-devops/"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Install extension",
+        "type": "shell",
+        "command": "az extension add --source ./dist/azure_devops-1.0.2-py2.py3-none-any.whl -y",
+        "windows": {
+            "command": "az extension add --source .\\dist\\azure_devops-1.0.2-py2.py3-none-any.whl -y",
+        },
+        "options": {
+          "cwd": "${workspaceRoot}/azure-devops/"
+        },
+        "dependsOn": [
+            "BuildWheel"
+        ],
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "Update extension",
+        "type": "shell",
+        "command": "az extension add --source ./dist/azure_devops-1.0.2-py2.py3-none-any.whl -y",
+        "windows": {
+            "command": "az extension add --source .\\dist\\azure_devops-1.0.2-py2.py3-none-any.whl -y",
+        },
+        "options": {
+          "cwd": "${workspaceRoot}/azure-devops/"
+        },
+        "dependsOn": [
+            "Uninstall extension",
+            "BuildWheel"
+        ],
+        "group": "build",
+        "problemMatcher": []
+      }
+    ]
+  }
